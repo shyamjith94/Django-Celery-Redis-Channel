@@ -6,7 +6,7 @@
 * run command "docker compose -f docker_compose.yaml up"
     docker will pull and create django celery redis instances
 * docker will run redis broker redis:6379/1, for celery redis:6379/2
-* django will run 127.0.0.1:500
+* django will run 127.0.0.1:5000
 
 # Api Call
 * keep connection on web socket using ws://127.0.0.1:5000/ws/subscribe/user/1/
