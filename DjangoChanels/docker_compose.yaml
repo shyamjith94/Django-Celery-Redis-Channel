@@ -1,0 +1,43 @@
+version: '3'
+
+                   # <------------------------ django ----------------------------------------------------------------->
+services:
+  django:
+    container_name: django
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: python manage.py runserver 0.0.0.0:5000
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+#    env_file:
+#      - ./.env.alpha
+    depends_on:
+      - redis_alpha
+
+                    # <------------------------ Redis ----------------------------------------------------------------->
+
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
+                      #<------------------------ Celery --------------------------------------------------------------->
+
+  celery:
+    container_name: celery
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: celery -A DjangoChanels worker -l INFO
+    volumes:
+      - .:/code
+#    env_file:
+#      - ./.env.alpha
+    depends_on:
+      - redis
